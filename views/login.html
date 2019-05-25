@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+	<title>connexion</title>
+	<style type="text/css">
+		body
+		{	background-image: url("C:/Users/lenovo/Desktop/Aws project/image/post-it-notes.gif");
+			margin: 10% auto;
+			background-color: f0f0f0;
+			color: 666;
+			position: relative;
+			width: 300px;
+			font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, "sans-serif";
+			font-size: 14px;
+		}
+		
+		form
+		{
+			background-color: #09f;
+			border-radius: 15px;
+			box-shadow: 0px 0px 40px #999;
+			color: #fff;
+		}
+		
+		form h2
+		{
+			margin: 0px;
+			padding: 20px;
+			font-weight: normal;
+		}
+		
+		form > div#saisie
+		{
+			text-align: center;
+			background-color: #fff;
+			color: #09f;
+			padding: 20px;
+		}
+		
+		form > div#saisie > input
+		{
+			width: 230px;
+			padding: 10px;
+			border: solid 1px #ccc;
+			border-radius: 6px;
+			margin: 0px 0px 20px 0px;
+		}
+		
+		form > div#saisie > input:last-child
+		{
+			margin: 0px;
+		}
+		
+		form > div#saisie > input:hover
+		{
+			border: solid 1px #09f;
+		}
+		
+		form > div#boutons
+		{
+			padding: 20px;
+			text-align: center;
+		}
+		
+		form > div#boutons > input
+		{
+			cursor: pointer;
+			width: 100px;
+			padding: 8px;
+			border: none;
+			border-radius: 4px;
+			background-color: #fff;
+			color: #09f;
+			font-size: 11px;
+			margin: 2px;
+			border: solid 1px #fff;
+		}
+
+		form > div#boutons > input:hover
+		{
+			background-color: transparent;
+			color: #fff;
+		}
+	</style>
+	 <!--script type="text/javascript" src="app.js"></script-->
+</head>
+
+<body>
+	<form action="verification" method="post">
+		<h2>connexion</h2>
+		<div id="saisie">
+			<input type="email" name="mail" placeholder="***@****.com" value="" required /><br />
+			<input type="password" name="motdepasse" placeholder="mot de passe" value="" required />
+			
+		</div>
+		<div id="boutons">
+			<input type="submit" value="Valider" />
+			
+			<a href="/inscription"><h4 style="color: white;"> Créer un compte ?</h4></a>
+
+			
+		</div>
+	</form>
+
+</body>
+</html>

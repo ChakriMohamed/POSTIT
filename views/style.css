@@ -1,0 +1,84 @@
+#corps{
+		height: 550px;
+  
+	}
+body{
+	overflow: hidden;
+}
+#log{
+	position: absolute;
+	right: 8px;
+	top: 8px;
+	height: 100px;}
+
+.modal{
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0,0,0,0.7);
+		position: absolute;
+		top: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		display: none;
+}	
+
+.modal_content{
+
+	width: 40%;
+	height: 70%;
+	background-color: #00000e;
+	border-radius: 3%;
+	text-align: center;
+	padding: 1%;
+	position: relative;
+	display: block;
+  top: 5%;
+
+}
+
+.modal_content input, textarea{
+		width: 50%;
+		display: block;
+		margin: 8% auto; 
+
+		border: 0;
+ 		 background: none;
+  
+ 
+  		text-align: center;
+  		border: 2px solid #e0e0e0;
+  		padding: 14px 10px;
+  		
+  		outline: none;
+  		color: white;
+  		border-radius: 24px;
+  		transition: 0.25s;
+}
+
+
+.close{
+	font-size: 200%;
+	position: absolute;
+  right: 3%;
+	top: 1%;
+	
+	color: red;
+	transform: rotate(45deg);
+	cursor: pointer;
+}
+.close:hover{
+	font-size: 230%;
+}
+
+
+#sub{
+	border-color:  #808080;
+
+}
+
+#sub:hover{background-color: #404040;}
+.modal_content input[type="text"]:focus,.modal_content input[type="password"]:focus,.modal_content input[type="textarea"]:focus{ border-color: #808080; width: 80%;}
+.modal_content textarea:focus{ border-color: #808080; width: 80%;}
+h1{color: white;}
+
