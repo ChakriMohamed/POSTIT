@@ -68,12 +68,12 @@ body{
 .modal_content input, textarea{
 		width: 50%;
 		display: block;
-		margin: 8% auto; 
-
+		margin: 7% auto; 
+		align-items: center;
 		border: 0;
  		 background: none;
-  
- 
+
+			
   		text-align: center;
   		border: 2px solid #e0e0e0;
   		padding: 14px 10px;
@@ -83,7 +83,6 @@ body{
   		border-radius: 24px;
   		transition: 0.25s;
 }
-
 
 .close{
 	font-size: 200%;
@@ -129,8 +128,22 @@ text-decoration: none;
 color: black;
 }
 
+#conectee{
+margin-left: 30px;
+margin-top: 25px;
+color: white;
+}
 
+em{
+color:blue;  
+}
 
+#tit{
+  position:absolute;
+	margin-left:50%;
+	margin-top:25px;
+	color: #808080;
+}
     </style>
 
 
@@ -141,20 +154,38 @@ color: black;
 
 	<div style="background-color: #00000f;height: 100px; display: flex;">
 			<h1 style="font-size: 300%;margin-top: 1%; margin-left: 2%;">Post-It</h1>
+			<div id="conectee">
+					{% for user in users %}
+						{% if user.email == login %} 
+						  <p>
+								Salut <em>{{ user.pseudo }}</em> Créez votre note ici !!!
+						 </p>
+						{% endif %}
+				{% endfor %}
+			</div>
+
+			<h3 id="tit">
+					Cliquer pour voir la ==><a href="/presentation"> Presentation </a>  
+			</h3>
+
 			<p class="out">
 					<button type="button" class="btn btn-default btn-sm">
 						<span class="glyphicon glyphicon-log-out"></span><a href="/logout"> Log out</a> 
 					</button>
 				</p>
-
-			
 	</div>
 
 	<div id ="corps" >
-		<!--
-		<h1 > {{titre}}</h1><br>
-		<p>{{note}}</p>
-		-->
+			<div id="conectee">
+					{% for note in notes %}
+						{% if note.user == login %} 
+						<!--div>
+							 ici creer les post_it  tout les notes de l'utiilisateur dans "note.note" et le titre "note.titre"
+						</div-->
+						{% endif %}
+				{% endfor %}
+			</div>
+
 			</div>  
 	<div class="modal">
 		
@@ -164,15 +195,15 @@ color: black;
 				<div class="close">
 				  <b>+</b>	
 				</div>
-				
+			
 				
 			
 		<!--	<form method="post" action="/note" id ="memo">	-->
 		  <input type="text" name="titre" id="titre" placeholder="Titre" required >
-          <p id="eror" style=" color: red;display: none; "> veuillez renseignez ce champs!</p>
+          <!--p id="eror" style=" color: red; "> veuillez renseignez ce champs!</p><br-->
           
           <textarea id="note1" name="note" required rows="10" > Saisir votre note  </textarea>
-          <input type="hidden" name="auteur" value ="{{ email }}" id="mail">
+          <input type="hidden" name="auteur" value ="{{login}}" id="mail-log">
 			<input type="hidden" name="x" id = "setX">
 			<input type="hidden" name="y" id="setY">
 					
@@ -185,10 +216,6 @@ color: black;
 
 		</div>	
 
-
-
-
-
 	</div>
 
 
@@ -197,6 +224,7 @@ color: black;
 const id = ""
 var cpt = 0;
 var x,y;
+
 var corps = document.querySelector('#corps');
 
 
@@ -222,12 +250,8 @@ corps.addEventListener("dblclick",function(e){
 
 document.querySelector("#savenote").addEventListener("click",function(e){
 	e.preventDefault();
-	var contenuNote = document.querySelector('#note1').value
-	var titre = document.querySelector('#titre').value
-/*	var contenuNX = document.querySelector('#setX').value
-	var contenuY = document.querySelector('#setY').value
-	var contenuMail = document.querySelector('#mail').value
-*/
+	var contenuNote = document.querySelector('#note1').value;
+	var titre = document.querySelector('#titre').value;
    if (contenuNote!="" && titre!="" ){
 
 	createItem(x,y,titre,contenuNote)
@@ -243,25 +267,6 @@ document.querySelector("#savenote").addEventListener("click",function(e){
 
     }
 
-
-	/*$.ajax({
-			 TYPE : "POST",
-			 url : "/",
-			 contentType : "application/json",
-			 data: JSON.stringfy({titre : contenuTitre ,
-
-			 					  note : contenuNote,
-			 					  x : contenuNX,
-			 					  y : contenuY,
-			 					  email : contenuMail	
-			 					 })
-
-	})*/
-
-
-	
-
-	
 
     
     });		
@@ -279,25 +284,20 @@ document.querySelector("#savenote").addEventListener("click",function(e){
  });
 
 
-
+/*
 document.querySelector('#delete').addEventListener("click",function(){
 
  		alert("lkrgkenr");
 
 
  });
-
-
-
-/*var saveBtn = document.querySelector("#savenote").addEventListener('click',function(e){
-	alert('lm;')
-	sendNote();
-}) */
+*/
 
 
 function sendNote(){
-var titre = document.querySelector('#titre ').value;
+var titre = document.querySelector('#titre').value;
 var note = document.querySelector("#note1").value;
+var user_login = document.querySelector("#mail-log").value; /**************************************/
 
  xhr = new XMLHttpRequest();
  xhr.onreadystateChange = function(){
@@ -312,14 +312,13 @@ var note = document.querySelector("#note1").value;
 
 	}
 };
-data = { titre:titre , note: note, x:x,y:y};
+
+data = { titre:titre , note: note, user: user_login , x:x,y:y};  /**************c a cause de la clé étrangere!!!!************************/
+console.log(data.user);
 xhr.open("post","/note",true);
 xhr.setRequestHeader('Content-Type','application/json;charset=UTF-8')
 xhr.overrideMimeType("text/plain");
 xhr.send(JSON.stringify(data))
-
-
-
 
 }
 
@@ -382,6 +381,7 @@ function createItem(x,y,t,z){
 	note.style.left = x+"px"
 	note.style.border = "solid"
 	note.className= "note"+cpt
+	note.style.color = "blue";
 	note.id = "note"
 
 	note.appendChild(txt3)
@@ -398,7 +398,7 @@ function createItem(x,y,t,z){
 
 
 
-
+/*
 
 dragElement(document.getElementById("note"));
 
@@ -441,7 +441,7 @@ function dragElement(elmnt) {
     document.onmouseup = null;
     document.onmousemove = null;
   }
-}
+}*/
 
 
 
