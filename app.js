@@ -94,44 +94,33 @@ app.get('/',function(req, res) {
 });
 
 
+app.get('/presentation',function(request, response) {
+  response.sendFile( __dirname  + '/views/presentation.html');
+});
+
 
 app.get('/login',function(request, response) {
   response.sendFile( __dirname  + '/views/login.html');
 });
 
 app.get('/post_it',async (req, res) => {
-  let users = await knex('users').select();
+
   if (!req.session.user) {
-    return res.redirect('/');
+        return res.redirect('/');
   }
 
   let info = {
     email: req.session.user,
-    pseudo: req.session.name,
-    users: users,
+    users: await knex('users'),
+    notes: await knex('notes'),
   };
 
   if (req.xhr) {
     /* An XMLHTTPRequest--return JSON instead */
     return res.json(info);
   } else {
-    return res.render('post_it.html', info);
+    return res.render('post_it.html', {login : info.email, users : info.users, note_user : info.notes});
   }
-  /*
-  if (req.session.user) {
-   // try {
-       res.sendFile( __dirname  + '/views/post_it.html');
-     //res.render('post_it.html', {
-     //   current: req.session.user
-    // });
-    //} catch (err) {
-    //  console.error(err);
-    //  res.status(500).send('Error');
-   // }
-  } else {
-    res.redirect('/');
-  }
-  */
 });
 
 app.get('/inscription', async (req, res) => {
@@ -189,21 +178,10 @@ app.post('/verification', async (req, res) => {
   if (user) {
       req.session.user = user.email;
       req.session.name = user.pseudo;
-    /*try {
-      res.render('post_it.html', { 
-        //users: await knex('users'),
-        //current: req.session.user,
-        email: req.body.mail,
-      });
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Error');
-    }*/
 
     res.redirect('/post_it');
-   // res.sendFile( __dirname  + '/post_it.html');
   } else {
-    res.render('<wzlogin.html', { 
+    res.render('login.html', { 
       login: req.body.login,
       message: 'Wrong login or password',
     });
@@ -226,10 +204,11 @@ app.post('/note',  async (req, res) => {
   var data = {
     titre: req.body.titre,
     note: req.body.note,
-    user: req.body.auteur,
+    user: req.session.user,
     x: req.body.x,
     y:req.body.y,
   };
+  
   try {
     if (data.titre 
         && data.note
@@ -241,7 +220,7 @@ app.post('/note',  async (req, res) => {
       */
       res.redirect('/');
     } else {
-      alert('BAD DATA');
+      //alert('BAD DATA');
       //res.render('/views/inscription.html', { data: data, message: 'Bad data' });
     }
   } catch (err) {
@@ -254,6 +233,7 @@ app.post('/note',  async (req, res) => {
   }
   
 });
+
 app.post('/supprimer',async function(req,res){
   var event = {
  
@@ -299,8 +279,7 @@ app.post('/modifier',async function(req,res){
         }
       res.status(404).send("Erreur")
     }
-        
-        
+          
 });         
 
 
